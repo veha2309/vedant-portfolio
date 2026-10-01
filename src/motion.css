@@ -1,0 +1,118 @@
+/* Reference-inspired composition, using local work and the approved light palette. */
+:root {
+  background: #f3f1e9;
+  color: #263629;
+  --muted: #556354;
+  --accent: #365b44;
+}
+.portfolio-header {
+  position: sticky;
+  top: 0;
+  background: #f3f1e9;
+  z-index: 15;
+  min-height: 90px;
+  border: 0;
+  width: calc(100% - 80px);
+}
+.wordmark {
+  font-size: 33px;
+  letter-spacing: -0.1em;
+}
+.wordmark span {
+  color: var(--accent);
+}
+.header-connect {
+  margin-left: auto;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.header-connect i {
+  width: 6px;
+  height: 6px;
+  background: #517744;
+  border-radius: 50%;
+}
+.menu-toggle {
+  border: 0;
+  background: none;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  font-size: 11px;
+  color: inherit;
+  cursor: pointer;
+  padding: 15px 0 15px 25px;
+}
+.menu-toggle > span {
+  font-size: 24px;
+}
+.menu-panel {
+  position: fixed;
+  inset: 90px 0 0;
+  z-index: 14;
+  background: #e0e6d5;
+  padding: 45px max(40px, calc((100% - 1280px) / 2));
+  overflow-y: auto;
+}
+.menu-panel nav {
+  display: grid;
+  gap: 0;
+  max-width: 850px;
+}
+.menu-panel nav a {
+  font-size: clamp(34px, 5.5vw, 70px);
+  letter-spacing: -0.05em;
+  border-bottom: 1px solid #b6c2ad;
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.menu-panel nav a > span {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.menu-panel nav a > span:last-child {
+  margin-left: auto;
+  font-size: 24px;
+}
+.menu-panel p {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  margin-top: 35px;
+}
+.skip-link {
+  z-index: 30;
+}
+@media (max-width: 760px) {
+  .portfolio-header {
+    width: calc(100% - 40px);
+    min-height: 75px;
+    flex-wrap: nowrap;
+    padding: 0;
+  }
+  .header-connect {
+    font-size: 9px;
+  }
+  .menu-toggle {
+    padding-left: 12px;
+    gap: 9px;
+    font-size: 10px;
+  }
+  .wordmark {
+    font-size: 27px;
+  }
+  .menu-panel {
+    inset: 75px 0 0;
+    padding: 35px 20px;
+  }
+  .menu-panel nav a {
+    font-size: 43px;
+    padding: 8px 0;
+  }
+  .menu-panel nav a > span {
+    font-size: 9px;
+  }
+}

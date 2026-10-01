@@ -32,14 +32,12 @@ export default function RouteEffects() {
           top: savedPosition,
           behavior: "instant",
         });
-      else if (hash)
-        document.getElementById(hash.slice(1))?.scrollIntoView({
-          behavior:
-            navigationType === "POP" ||
-            matchMedia("(prefers-reduced-motion: reduce)").matches
-              ? "instant"
-              : "smooth",
-        });
+      else if (hash) {
+        const target = document.getElementById(hash.slice(1));
+        const behavior = navigationType === "POP" || matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+        if (target?.dataset.storyScroll) window.scrollTo({top:Number(target.dataset.storyScroll),behavior});
+        else target?.scrollIntoView({behavior});
+      }
       else window.scrollTo({ top: 0, behavior: "instant" });
       if (navigationType !== "POP" && !hash)
         document

@@ -1,7 +1,11 @@
+import { useRef } from "react";
+import { useCaseMotion } from "../hooks/useCaseMotion";
 import { Link, useParams } from "react-router-dom";
 import { projects } from "../data/project";
 export default function CaseStudy() {
   const { slug } = useParams();
+  const root=useRef<HTMLElement>(null);
+  useCaseMotion(root,slug);
   const project = projects.find((item) => item.slug === slug);
   if (!project)
     return (
@@ -14,7 +18,7 @@ export default function CaseStudy() {
     );
   const next = projects[(projects.indexOf(project) + 1) % projects.length];
   return (
-    <main id="main" className="case" tabIndex={-1}>
+    <main ref={root} id="main" className={`case case-${project.slug}`} tabIndex={-1}>
       <Link className="text-link" to="/#work">
         ← Selected work
       </Link>
@@ -55,12 +59,14 @@ export default function CaseStudy() {
           </a>
         )}
       </div>
+      <nav className="case-index" aria-label="Case study sections"><a href="#case-overview">Overview ↓</a><a href="#case-decisions">Engineering decisions ↓</a><a href="#case-capabilities">Capabilities ↓</a><a href="#case-technology">Technology ↓</a></nav>
       <figure className={`case-image tone-${project.tone}`}>
         <img
-          src={project.image}
+          className="case-object"
+          src={`/images/gallery/${project.slug}-object.svg`}
           alt={project.imageAlt}
-          width={project.imageWidth ?? 1000}
-          height={project.imageHeight ?? 700}
+          width={projects.indexOf(project)<2 ? 852 : project.slug==="mahila-mitr" ? 370 : 420}
+          height={projects.indexOf(project)<2 ? 524 : project.slug==="mahila-mitr" ? 808 : 700}
           decoding="async"
         />
         <figcaption>
@@ -68,22 +74,22 @@ export default function CaseStudy() {
             "Product illustration — a visual explanation, not an application screenshot."}
         </figcaption>
       </figure>
-      <section className="case-section">
+      <section id="case-overview" className="case-section">
         <h2>Overview</h2>
         <p>{project.overview}</p>
       </section>
-      <section className="case-section">
+      <section id="case-decisions" className="case-section">
         <h2>Engineering decisions</h2>
         <div>
-          {project.decisions.map((item) => (
-            <article key={item.title}>
+          {project.decisions.map((item,index) => (
+            <article className="case-decision" key={item.title}><span className="case-decision-number" aria-hidden="true">0{index+1}</span>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
             </article>
           ))}
         </div>
       </section>
-      <section className="case-section">
+      <section id="case-capabilities" className="case-section">
         <h2>Supported capabilities</h2>
         <ul>
           {project.capabilities.map((item) => (
@@ -91,7 +97,7 @@ export default function CaseStudy() {
           ))}
         </ul>
       </section>
-      <section className="case-section">
+      <section id="case-technology" className="case-section">
         <h2>Technology</h2>
         <div className="tags">
           {project.tech.map((item) => (
