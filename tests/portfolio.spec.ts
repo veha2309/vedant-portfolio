@@ -68,3 +68,27 @@ test("reduced motion and keyboard skip link", async ({ page }) => {
   await page.keyboard.press("Enter");
   await expect(page.locator("#main")).toBeFocused();
 });
+
+test("Back restores selected work and all local media loads", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "View projects" }).click();
+  await page.locator(".project").first().click();
+  await expect(page).toHaveURL(/projects\/financeflow/);
+  await page.goBack();
+  await expect(page).toHaveURL(/#work/);
+  await page.evaluate(async () => {
+    for (const image of document.images) {
+      image.loading = "eager";
+      await image.decode();
+    }
+  });
+  expect(
+    await page
+      .locator("img")
+      .evaluateAll((images) =>
+        images.every((image) => (image as HTMLImageElement).naturalWidth > 0),
+      ),
+  ).toBeTruthy();
+});
