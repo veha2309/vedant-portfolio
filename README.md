@@ -14,7 +14,7 @@ Edit `src/data/project.ts`, `experience.ts`, or `skills.ts`. Components and styl
 
 Vercel: Vite framework, build `npm run build`, output `dist`. SPA rewrites support direct case-study URLs. Project name: `vedant-portfolio`. No secrets required.
 
-The studio link points to its existing verified production alias, https://interportfolio.vercel.app. Studio rebranding is currently local-only. Product illustrations are labeled and are not screenshots.
+The studio link points to its existing verified production alias, https://my-portfolio-jade-rho-86.vercel.app. Studio rebranding is currently local-only. Product illustrations are labeled and are not screenshots.
 
 ## Production
 

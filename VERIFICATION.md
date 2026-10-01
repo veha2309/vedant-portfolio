@@ -13,3 +13,6 @@ Reference: https://www.meermohsin.me/ — oversized typography, staggered projec
 - Scroll profile: headless desktop Chrome, 1440×1000, no CPU throttling, eight-second scripted native scroll; p95 frame interval 17.4 ms, no frames over 50 ms, no long tasks and no runtime errors.
 
 - First GitHub-triggered production deployment READY: commit 2b99940; https://vedant-portfolio-seven-orcin.vercel.app. All nine browser scenarios pass against production, including case-study reloads and local image loading.
+
+- Subsequent GitHub push e1051f8 produced a second READY production deployment. All five public case-study routes and the recovery page returned successfully, with correct titles and zero runtime errors.
+- Domain check: interportfolio.vercel.app now aliases the personal portfolio. The studio link uses the independently verified existing studio alias my-portfolio-jade-rho-86.vercel.app to avoid linking back to the portfolio. No studio deployment was created.

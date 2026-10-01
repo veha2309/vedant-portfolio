@@ -271,7 +271,7 @@ function Home() {
           <p className="studio-link">
             Looking for a website or a freelance collaboration?{" "}
             <a
-              href="https://interportfolio.vercel.app"
+              href="https://my-portfolio-jade-rho-86.vercel.app"
               target="_blank"
               rel="noreferrer"
             >
