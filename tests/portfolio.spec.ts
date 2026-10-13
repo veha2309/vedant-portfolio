@@ -162,6 +162,42 @@ test("case-study reading index navigates to decisions and capabilities",async({p
  await expect(page.locator('#case-capabilities')).toBeInViewport();
 });
 
+test("short desktop gallery contains artwork and keeps project copy beside it after resizing", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/');
+  await expect(page.locator('.portfolio-film')).toHaveClass(/is-film/);
+  for (const viewport of [{ width:1153,height:737 }, { width:1440,height:759 }, { width:1024,height:600 }, { width:768,height:900 }]) {
+    await page.setViewportSize(viewport);
+    await expect(page.locator('.pin-spacer')).toHaveCount(0);
+    await expect(page.locator('.film-panel[inert]')).toHaveCount(0);
+    for (const project of projects) {
+      const chapter = page.locator(`#chapter-${project.slug}`);
+      await chapter.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(700);
+      const image = await chapter.locator('.chapter-image img').boundingBox();
+      const copy = await chapter.locator('.chapter-decision').boundingBox();
+      expect(image).not.toBeNull();
+      expect(copy).not.toBeNull();
+      expect(image!.height).toBeLessThan(viewport.height * .6);
+      expect(image!.x + image!.width).toBeLessThanOrEqual(copy!.x + 1);
+      expect(Math.min(image!.y + image!.height,copy!.y + copy!.height)).toBeGreaterThan(Math.max(image!.y,copy!.y));
+      if (viewport.width === 1153 && project.slug === 'stockpulse-mobile') {
+        await page.evaluate(y => scrollTo({top:y,behavior:'instant'}), await chapter.evaluate(el => el.getBoundingClientRect().top + scrollY - 90));
+        await page.waitForTimeout(700);
+        await page.screenshot({path:'artifacts/responsive-stockpulse-1153.png'});
+      }
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width + 1);
+  }
+  await page.setViewportSize({width:1440,height:1000});
+  await expect(page.locator('.pin-spacer')).toHaveCount(1);
+  await page.emulateMedia({reducedMotion:'reduce'});
+  await expect(page.locator('.pin-spacer')).toHaveCount(0);
+  await page.locator('#chapter-stockpulse-mobile').scrollIntoViewIfNeeded();
+  const image = await page.locator('#chapter-stockpulse-mobile .chapter-image img').boundingBox();
+  expect(image!.height).toBeLessThanOrEqual(520);
+});
+
 test("mobile scroll story moves project imagery with no pinning and keeps the chapter rail visible",async({page})=>{
  await page.setViewportSize({width:390,height:844});
  await page.goto('/');

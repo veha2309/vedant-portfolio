@@ -487,3 +487,16 @@ footer h2 { font-size:clamp(70px,11vw,160px); line-height:.9; font-weight:800; l
 @media(prefers-reduced-motion:reduce) { .name-letter { transform:none !important; } }
 
 .story-opening .hero-copy h1>span>.name-letter { color:inherit; margin:0; -webkit-text-stroke:0; }
+
+/* The unpinned gallery also serves short desktop windows and reduced motion. */
+@media(min-width:761px) {
+ .portfolio-film:not(.is-film) .story-project { min-height:0; }
+ .portfolio-film:not(.is-film) .chapter-scene { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:24px 5vw; min-height:0; align-items:center; }
+ .portfolio-film:not(.is-film) .chapter-intro { grid-column:1/-1; position:relative; z-index:1; }
+ .portfolio-film:not(.is-film) .chapter-intro h3 { font-size:clamp(48px,8vw,120px); overflow-wrap:anywhere; margin-bottom:0; }
+ .portfolio-film:not(.is-film) .chapter-image { width:100%; max-width:100%; margin:0; }
+ .portfolio-film:not(.is-film) .chapter-image img { width:100%; height:auto; max-height:min(58svh,520px); object-fit:contain; }
+ .portfolio-film:not(.is-film) .chapter-decision { position:relative; inset:auto; width:100%; max-width:none; margin:0; }
+ .portfolio-film:not(.is-film) .chapter-capabilities { grid-column:1/-1; margin:0; z-index:1; }
+ .portfolio-film:not(.is-film) .chapter-watermark { display:none; }
+}
