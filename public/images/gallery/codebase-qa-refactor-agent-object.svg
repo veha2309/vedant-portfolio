@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560" fill="none">
+  <rect x="24" y="24" width="852" height="512" rx="16" fill="#18232a" stroke="#40515b"/>
+  <path d="M24 78H876M211 78V536" stroke="#354550"/>
+  <g font-family="Arial, sans-serif">
+    <g fill="#dce9e3"><text x="52" y="57" font-size="16" font-weight="600">Change Lens</text><text x="724" y="55" font-size="10" letter-spacing="1">LOCAL WORKSPACE</text></g>
+    <g fill="#9baeb4" font-size="12"><text x="52" y="121">WORKSPACE</text><text x="52" y="166">Editor</text><text x="52" y="204">Review</text></g>
+    <rect x="40" y="222" width="155" height="36" rx="6" fill="#304a46"/>
+    <g fill="#b9dacc" font-size="12"><text x="52" y="246">Lens / impact</text></g>
+    <g fill="#9baeb4" font-size="12"><text x="52" y="288">Linked tests</text><text x="52" y="326">Design</text></g>
+    <text x="243" y="122" fill="#dce9e3" font-size="23" font-weight="600">Follow the change.</text>
+    <text x="243" y="149" fill="#9baeb4" font-size="12">Source evidence, relevant tests, reviewed refactors.</text>
+    <rect x="243" y="181" width="602" height="174" rx="8" fill="#202e36" stroke="#354550"/>
+    <g stroke="#86bda7" stroke-width="2"><path d="M415 262H489M653 235H700V214H732M653 287H700V313H732"/><path d="m481 256 8 6-8 6"/></g>
+    <rect x="266" y="234" width="149" height="57" rx="8" fill="#314b46" stroke="#86bda7"/>
+    <rect x="489" y="208" width="164" height="108" rx="8" fill="#293f48" stroke="#7297b0"/>
+    <g fill="#dce9e3" font-size="12"><text x="283" y="258">Selected function</text><text x="283" y="277" fill="#9baeb4" font-size="10">Saved source</text><text x="508" y="247">Potential impact</text><text x="508" y="271" fill="#9baeb4" font-size="10">Inspect linked evidence</text></g>
+    <g fill="#b9dacc" font-size="11"><circle cx="739" cy="214" r="7" fill="#86bda7"/><text x="756" y="218">Code</text><circle cx="739" cy="313" r="7" fill="#7297b0"/><text x="756" y="317">Tests</text></g>
+    <rect x="243" y="377" width="602" height="117" rx="8" fill="#202e36" stroke="#354550"/>
+    <text x="266" y="407" fill="#dce9e3" font-size="12">REFACTOR REVIEW</text>
+    <g font-size="12"><rect x="266" y="428" width="150" height="40" rx="6" fill="#314b46"/><text x="294" y="453" fill="#b9dacc">Preview diff</text><text x="457" y="453" fill="#dce9e3">Apply refactor</text><text x="675" y="453" fill="#9baeb4">Undo</text></g>
+  </g>
+</svg>

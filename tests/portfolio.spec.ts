@@ -23,8 +23,8 @@ test("projects, anchors, contact prompt, unknown route and no backend UI", async
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "VedantShukla.",
   );
-  await expect(page.locator(".project")).toHaveCount(5);
-  await expect(page.locator(".project").last()).toContainText("Mahila Mitr");
+  await expect(page.locator(".project")).toHaveCount(projects.length);
+  await expect(page.locator("#chapter-mahila-mitr")).toContainText("Mahila Mitr");
   await page.getByRole("link", { name: "Contact me" }).click();
   await expect(page).toHaveURL(/#contact/);
   await page.locator(".contact-email").click();
@@ -75,7 +75,7 @@ test("Back restores selected work and all local media loads", async ({
   await page.goto("/");
   await page.getByRole("link", { name: "View projects" }).click();
   await page.locator(".project").first().click();
-  await expect(page).toHaveURL(/projects\/financeflow/);
+  await expect(page).toHaveURL(/projects\/stockpulse$/);
   await page.goBack();
   await expect(page).toHaveURL(/#work/);
   await page.evaluate(async () => {
@@ -150,6 +150,83 @@ test("desktop chapter deep link reloads into its gallery position", async ({page
  await page.reload();
  await page.waitForTimeout(1800);
  await expect(page.locator('.story-jumps a[href="#chapter-mahila-mitr"]')).toHaveAttribute('aria-current','step');
+});
+
+test("FinanceFlow is the final gallery chapter and remains reachable by chapter link", async ({page}) => {
+  await page.goto('/');
+  await expect(page.locator('.story-project').first()).toHaveAttribute('id','chapter-stockpulse');
+  await expect(page.locator('.story-project').last()).toHaveAttribute('id','chapter-financeflow');
+  const last = page.locator('.story-jumps a').last();
+  await expect(last).toHaveAttribute('href','#chapter-financeflow');
+  await expect(last).toContainText('07');
+  await last.click();
+  await expect(page.locator('#chapter-financeflow')).not.toHaveAttribute('inert');
+  await expect(last).toHaveAttribute('aria-current','step');
+  await page.waitForTimeout(1400);
+  expect(Math.abs((await page.locator('#chapter-financeflow').boundingBox())!.x)).toBeLessThan(2);
+  await page.screenshot({path:'artifacts/financeflow-final-chapter.png'});
+  await page.reload();
+  await expect(page.locator('.story-project').last()).toHaveAttribute('id','chapter-financeflow');
+});
+
+test("hovering artwork during the horizontal gallery does not add a second scale", async ({page}) => {
+  await page.setViewportSize({width:1440,height:1000});
+  await page.goto('/');
+  await page.locator('.story-jumps a[href="#chapter-stockpulse"]').click();
+  await expect(page.locator('#chapter-stockpulse')).not.toHaveAttribute('inert');
+  await page.waitForTimeout(1500);
+  const image = page.locator('#chapter-stockpulse .chapter-image img');
+  const wrapper = page.locator('#chapter-stockpulse .chapter-image');
+  const before = await wrapper.evaluate(el => getComputedStyle(el).transform);
+  await image.hover();
+  await page.waitForTimeout(650);
+  expect(await image.evaluate(el => getComputedStyle(el).transform)).toBe('none');
+  expect(await wrapper.evaluate(el => getComputedStyle(el).transform)).toBe(before);
+  await page.mouse.wheel(0,180);
+  await page.waitForTimeout(900);
+  expect(await wrapper.evaluate(el => getComputedStyle(el).transform)).not.toBe(before);
+  expect(await image.evaluate(el => getComputedStyle(el).transform)).toBe('none');
+});
+
+test("new projects have the correct categories, source links and reachable gallery chapters", async ({page}) => {
+  await page.setViewportSize({width:1440,height:1000});
+  await page.goto('/');
+  await expect(page.locator('.film-panel')).toHaveCount(projects.length + 1);
+  for (const slug of ['liquid-ui-components','codebase-qa-refactor-agent']) {
+    const chapter = page.locator(`#chapter-${slug}`);
+    await page.locator(`.story-jumps a[href="#chapter-${slug}"]`).click();
+    await expect(chapter).not.toHaveAttribute('inert');
+    await page.waitForTimeout(1400);
+    await expect(chapter.locator('.chapter-decision')).toBeInViewport();
+    const box = await chapter.boundingBox();
+    expect(Math.abs(box!.x)).toBeLessThan(2);
+    expect(box!.width).toBeCloseTo(1440,0);
+    await page.screenshot({path:`artifacts/${slug}-desktop.png`});
+  }
+  await page.setViewportSize({width:1440,height:760});
+  for (const slug of ['liquid-ui-components','codebase-qa-refactor-agent']) {
+    await page.locator(`.story-jumps a[href="#chapter-${slug}"]`).click();
+    await page.waitForTimeout(1400);
+    const chapter = page.locator(`#chapter-${slug}`);
+    const caption = await chapter.locator('.chapter-image > span').boundingBox();
+    const capabilities = await chapter.locator('.chapter-capabilities').boundingBox();
+    expect(caption!.y + caption!.height).toBeLessThan(capabilities!.y);
+    await page.screenshot({path:`artifacts/${slug}-compact-desktop.png`});
+  }
+  await page.goto('/#chapter-codebase-qa-refactor-agent');
+  await expect(page.locator('.story-jumps a[href="#chapter-codebase-qa-refactor-agent"]')).toHaveAttribute('aria-current','step');
+  await page.goto('/projects/liquid-ui-components');
+  await expect(page.locator('main > .eyebrow')).toContainText('Flutter packages');
+  await expect(page.getByRole('link',{name:'View source'})).toHaveAttribute('href','https://github.com/veha2309/liquid_ui_components');
+  await expect(page.getByRole('link',{name:'View on pub.dev'})).toHaveAttribute('href','https://pub.dev/packages/liquid_ui_components');
+  await page.goto('/projects/codebase-qa-refactor-agent');
+  await expect(page.getByRole('heading',{level:1})).toHaveText('Change Lens');
+  await expect(page.getByRole('link',{name:'View source'})).toHaveAttribute('href','https://github.com/veha2309/code_qa_refactoring_agent');
+  await page.setViewportSize({width:390,height:844});
+  await page.goto('/#chapter-liquid-ui-components');
+  await page.waitForTimeout(900);
+  await page.screenshot({path:'artifacts/liquid-ui-components-mobile.png'});
+  await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 
 test("case-study reading index navigates to decisions and capabilities",async({page})=>{

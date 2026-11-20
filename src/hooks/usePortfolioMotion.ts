@@ -31,9 +31,10 @@ export function usePortfolioMotion(root: RefObject<HTMLElement | null>) {
             if(nav&&link&&nav.scrollWidth>nav.clientWidth) nav.scrollTo({left:Math.max(0,link.offsetLeft-nav.offsetLeft-(nav.clientWidth-link.offsetWidth)/2),behavior:"smooth"});
           };
           chapters.forEach((chapter,index) => {
+            const artIndex = Number(chapter.dataset.artIndex);
             const tl=gsap.timeline({scrollTrigger:{trigger:chapter,start:"top 85%",end:"bottom 30%",scrub:.45,
               onToggle:self=>{if(self.isActive)activeChapter(index);}}});
-            tl.fromTo(chapter.querySelector(".chapter-image"),{y:55,scale:.9,rotation:index%2 ? -5 : 5},{y:-18,scale:1,rotation:0,ease:"none",duration:1},0)
+            tl.fromTo(chapter.querySelector(".chapter-image"),{y:55,scale:.9,rotation:artIndex%2 ? -5 : 5},{y:-18,scale:1,rotation:0,ease:"none",duration:1},0)
               .fromTo(chapter.querySelector(".chapter-intro"),{x:18},{x:0,ease:"none",duration:.5},0)
               .fromTo(chapter.querySelector(".chapter-decision"),{y:28},{y:0,ease:"none",duration:.6},.15);
           });
@@ -68,32 +69,33 @@ export function usePortfolioMotion(root: RefObject<HTMLElement | null>) {
         activate(0);
         const work = element.querySelector<HTMLElement>("#work");
         const journey = gsap.timeline({scrollTrigger:{
-          id:"portfolio-film", trigger:scene,start:"top top+=90",end:()=>"+="+innerHeight*8,
+          id:"portfolio-film", trigger:scene,start:"top top+=90",end:()=>"+="+innerHeight*chapters.length*1.6,
           pin:true,scrub:.55,anticipatePin:1,invalidateOnRefresh:true,
           onUpdate:self => {
             const time = self.progress * totalDuration;
-            activate(Math.min(5,Math.max(0,Math.floor((time + .8)/chapterDuration))));
+            activate(Math.min(chapters.length,Math.max(0,Math.floor((time + .8)/chapterDuration))));
           },
           onRefresh:self => {
             work?.setAttribute("data-story-scroll",String(self.start+(self.end-self.start)*heroDuration/totalDuration));
             chapters.forEach((chapter,index)=>chapter.setAttribute("data-story-scroll",String(self.start+(self.end-self.start)*(heroDuration+index*chapterDuration)/totalDuration)));
           },
         }});
-        journey.to(track,{xPercent:-100/6*chapters.length,duration:travelDuration,ease:"none"},0)
+        journey.to(track,{xPercent:-100/panels.length*chapters.length,duration:travelDuration,ease:"none"},0)
           .to(opening.querySelector(".hero-copy"),{xPercent:-15,y:-60,rotation:-5,duration:heroDuration,ease:"none"},0)
           .to(opening.querySelector(".opening-art"),{x:-100,rotation:12,scale:1.2,duration:heroDuration,ease:"none"},0)
           .to(opening.querySelector(".opening-browser"),{rotation:-25,y:-80,duration:heroDuration,ease:"none"},0)
           .to(opening.querySelector(".opening-phone"),{rotation:22,y:40,duration:heroDuration,ease:"none"},0);
         journey.to(opening.querySelectorAll(".name-letter"),{yPercent:(index)=>index%2 ? 20 : -35,rotation:(index)=>index%2 ? 5 : -5,stagger:.025,duration:heroDuration-.4,ease:"none"},0);
         chapters.forEach((chapter,index) => {
+          const artIndex = Number(chapter.dataset.artIndex);
           const at = heroDuration + index*chapterDuration;
           const image = chapter.querySelector(".chapter-image");
           const intro = chapter.querySelector(".chapter-intro");
           const decision = chapter.querySelector(".chapter-decision");
           const echo = chapter.querySelector(".chapter-echo");
-          const direction = index % 2 ? -1 : 1;
-          journey.fromTo(image,{scale:index<2 ? .7 : .82,y:140,rotation:direction*18},{scale:1,y:0,rotation:direction*-3,duration:.8,ease:"power3.out"},at-.8)
-            .to(image,{scale:index<2 ? 1.12 : 1.06,y:-85,rotation:direction*-12,duration:.8,ease:"none"},at)
+          const direction = artIndex % 2 ? -1 : 1;
+          journey.fromTo(image,{scale:artIndex<2 ? .7 : .82,y:140,rotation:direction*18},{scale:1,y:0,rotation:direction*-3,duration:.8,ease:"power3.out"},at-.8)
+            .to(image,{scale:artIndex<2 ? 1.12 : 1.06,y:-85,rotation:direction*-12,duration:.8,ease:"none"},at)
             .fromTo(intro,{x:140,y:40},{x:-100,y:-20,duration:chapterDuration,ease:"none"},at-.8)
             .fromTo(echo,{x:180,y:70,rotation:-12},{x:-120,y:-50,rotation:10,duration:chapterDuration,ease:"none"},at-.8)
             .fromTo(decision,{y:85,autoAlpha:0},{y:0,autoAlpha:1,duration:.6,ease:"power2.out"},at-.65)

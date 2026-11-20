@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { projects } from "../data/project";
 import { experience } from "../data/experience";
@@ -11,12 +11,13 @@ const chapterNotes = [
   { title: "Build for a different perspective.", detail: "Assistive camera interactions with accessibility at the centre." },
   { title: "Keep connection personal.", detail: "Mobile-first, with private chatting and a supporting web admin panel." },
 ];
+const galleryProjects = [...projects.filter(project => project.slug !== "financeflow"), ...projects.filter(project => project.slug === "financeflow")];
 export default function Home() {
   const root = useRef<HTMLElement>(null);
   usePortfolioMotion(root);
   return (
     <main ref={root} id="main" tabIndex={-1} className="story-home">
-      <div className="portfolio-film">
+      <div className="portfolio-film" style={{ "--panel-count": projects.length + 1 } as CSSProperties}>
         <div className="film-track">
           <section id="top" className="story-opening film-panel" aria-labelledby="hero-title">
             <p className="eyebrow opening-label">VEDANT SHUKLA — SOFTWARE ENGINEER / NEW DELHI</p>
@@ -39,33 +40,35 @@ export default function Home() {
           </section>
           <section id="work" className="projects" aria-labelledby="work-title">
             <h2 id="work-title" className="film-section-title">Selected engineering projects</h2>
-            {projects.map((project, index) => (
-              <Link id={`chapter-${project.slug}`} className={`project story-project film-panel chapter-${index}`} to={`/projects/${project.slug}`} key={project.slug}>
-                <div className="chapter-top"><span className="eyebrow">{project.number} / {project.category}</span><span className="chapter-open">Explore case study ↗</span></div>
+            {galleryProjects.map((project, galleryIndex) => {
+              const index = projects.indexOf(project);
+              const number = (galleryIndex + 1).toString().padStart(2, "0");
+              return <Link id={`chapter-${project.slug}`} className={`project story-project film-panel chapter-${index}`} data-art-index={index} to={`/projects/${project.slug}`} key={project.slug}>
+                <div className="chapter-top"><span className="eyebrow">{number} / {project.category}</span><span className="chapter-open">Explore case study ↗</span></div>
                 <div className="chapter-scene">
                   <div className="chapter-intro"><h3>{project.title}</h3></div>
                   <div className="chapter-aura" aria-hidden="true" />
-                  <div className="chapter-echo" aria-hidden="true"><img src={project.companion?.image ?? `/images/gallery/${project.slug}-object.svg`} alt="" width={project.companion ? 1440 : index<2 ? 852 : 420} height={project.companion ? 1000 : index<2 ? 524 : 700} loading="lazy" /></div>
+                  <div className="chapter-echo" aria-hidden="true"><img src={project.companion?.image ?? `/images/gallery/${project.slug}-object.svg`} alt="" width={project.companion ? 1440 : project.imageWidth ?? (index<2 ? 852 : 420)} height={project.companion ? 1000 : project.imageHeight ?? (index<2 ? 524 : 700)} loading="lazy" /></div>
                   <div className="chapter-image">
-                    <img src={`/images/gallery/${project.slug}-object.svg`} alt={project.imageAlt} width={index<2 ? 852 : index===4 ? 370 : 420} height={index<2 ? 524 : index===4 ? 808 : 700} loading="lazy" decoding="async" />
+                    <img src={`/images/gallery/${project.slug}-object.svg`} alt={project.imageAlt} width={project.imageWidth ?? (index<2 ? 852 : 420)} height={project.imageHeight ?? (index<2 ? 524 : 700)} loading="lazy" decoding="async" />
                     <span>{project.imageCaption ?? "PRODUCT ILLUSTRATION"}</span>
                   </div>
                   <div className="chapter-decision">
-                    <span className="eyebrow">{index < 2 ? "ON THE WEB" : "IN YOUR HAND"}</span>
-                    <h4>{chapterNotes[index].title}</h4>
-                    <p>{chapterNotes[index].detail}</p>
+                    <span className="eyebrow">{index < 2 ? "ON THE WEB" : index < 5 ? "IN YOUR HAND" : project.category}</span>
+                    <h4>{chapterNotes[index]?.title ?? project.tagline}</h4>
+                    <p>{chapterNotes[index]?.detail ?? project.description}</p>
                     <div className="tags">{project.tech.slice(0,3).map(tech => <span key={tech}>{tech}</span>)}</div>
                   </div>
                   <div className="chapter-capabilities"><span className="eyebrow">BUILT TO</span>{project.capabilities.slice(0,3).map(capability=><span key={capability}>{capability}</span>)}</div>
-                  <span className="chapter-watermark" aria-hidden="true">{project.number}</span>
+                  <span className="chapter-watermark" aria-hidden="true">{number}</span>
                 </div>
-              </Link>
-            ))}
+              </Link>;
+            })}
           </section>
         </div>
         <div className="film-index">
-          <span className="film-position" aria-hidden="true">SELECTED WORK / 01—05</span>
-          <nav className="story-jumps" aria-label="Project chapters">{projects.map(project => <a key={project.slug} href={`#chapter-${project.slug}`}><span>{project.number}</span>{project.title}</a>)}</nav>
+          <span className="film-position" aria-hidden="true">SELECTED WORK / 01—{projects.at(-1)?.number}</span>
+          <nav className="story-jumps" aria-label="Project chapters">{galleryProjects.map((project,index) => <a key={project.slug} href={`#chapter-${project.slug}`}><span>{(index + 1).toString().padStart(2,"0")}</span>{project.title}</a>)}</nav>
           <div className="film-progress" aria-hidden="true"><span /></div>
         </div>
       </div>

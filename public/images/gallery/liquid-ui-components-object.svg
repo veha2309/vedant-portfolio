@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560" fill="none">
+  <defs>
+    <linearGradient id="back" x1="80" y1="40" x2="820" y2="520" gradientUnits="userSpaceOnUse"><stop stop-color="#9baef4"/><stop offset=".48" stop-color="#d4c4ed"/><stop offset="1" stop-color="#e9bfa9"/></linearGradient>
+    <linearGradient id="glass" x1="240" y1="80" x2="620" y2="500" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="24"/></filter>
+  </defs>
+  <rect x="24" y="24" width="852" height="512" rx="36" fill="url(#back)"/>
+  <g filter="url(#soft)" opacity=".5"><circle cx="260" cy="230" r="125" fill="#788fea"/><circle cx="650" cy="320" r="140" fill="#edb195"/></g>
+  <g font-family="Arial, sans-serif" fill="#35324e">
+    <text x="66" y="78" font-size="12" letter-spacing="2">LIQUID UI / FLUTTER</text>
+    <rect x="205" y="108" width="490" height="370" rx="34" fill="#706490" opacity=".12"/>
+    <rect x="205" y="96" width="490" height="370" rx="34" fill="url(#glass)" stroke="#fff" stroke-opacity=".8"/>
+    <text x="245" y="144" font-size="13" letter-spacing="1">ONE MATERIAL. MANY POSSIBILITIES.</text>
+    <text x="245" y="186" font-size="30" font-weight="600">Make it fluid.</text>
+    <rect x="245" y="214" width="410" height="54" rx="27" fill="#fff" fill-opacity=".25" stroke="#fff" stroke-opacity=".6"/>
+    <rect x="250" y="219" width="132" height="44" rx="22" fill="#fff" fill-opacity=".6" stroke="#fff"/>
+    <g font-size="13" text-anchor="middle"><text x="316" y="247">Surfaces</text><text x="452" y="247">Controls</text><text x="584" y="247">Motion</text></g>
+    <text x="245" y="309" font-size="13">Material intensity</text>
+    <rect x="245" y="330" width="288" height="12" rx="6" fill="#fff" fill-opacity=".35"/>
+    <rect x="245" y="330" width="192" height="12" rx="6" fill="#7361ac" fill-opacity=".65"/>
+    <rect x="417" y="317" width="50" height="38" rx="19" fill="url(#glass)" stroke="#fff"/>
+    <rect x="572" y="316" width="82" height="40" rx="20" fill="#7361ac" fill-opacity=".6"/>
+    <circle cx="633" cy="336" r="17" fill="#fff" fill-opacity=".9"/>
+    <rect x="245" y="388" width="193" height="44" rx="22" fill="url(#glass)" stroke="#fff"/><text x="282" y="415" font-size="13">Explore components</text>
+    <text x="66" y="504" font-size="10" letter-spacing="1.5">SURFACES / CONTROLS / NAVIGATION / MORPHS</text>
+  </g>
+</svg>

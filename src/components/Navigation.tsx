@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import ProjectDrawer from "./ProjectDrawer";
 const links = [
   ["Home", "top"],
   ["Work", "work"],
@@ -89,6 +90,7 @@ export default function Navigation() {
         <i />
         Open to opportunities ↗
       </Link>
+      {!open && <ProjectDrawer />}
       <button
         ref={toggle}
         className="menu-toggle"

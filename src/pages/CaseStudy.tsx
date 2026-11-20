@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useCaseMotion } from "../hooks/useCaseMotion";
 import { Link, useParams } from "react-router-dom";
 import { projects } from "../data/project";
+import ProjectDemos from "../components/ProjectDemos";
 export default function CaseStudy() {
   const { slug } = useParams();
   const root=useRef<HTMLElement>(null);
@@ -59,21 +60,21 @@ export default function CaseStudy() {
           </a>
         )}
       </div>
-      <nav className="case-index" aria-label="Case study sections"><a href="#case-overview">Overview ↓</a><a href="#case-decisions">Engineering decisions ↓</a><a href="#case-capabilities">Capabilities ↓</a><a href="#case-technology">Technology ↓</a></nav>
-      <figure className={`case-image tone-${project.tone}`}>
+      <nav className="case-index" aria-label="Case study sections">{project.demos && <a href="#case-demos">Demos ↓</a>}<a href="#case-overview">Overview ↓</a><a href="#case-decisions">Engineering decisions ↓</a><a href="#case-capabilities">Capabilities ↓</a><a href="#case-technology">Technology ↓</a></nav>
+      {project.demos ? <ProjectDemos demos={project.demos} /> : <figure className={`case-image tone-${project.tone}`}>
         <img
           className="case-object"
           src={`/images/gallery/${project.slug}-object.svg`}
           alt={project.imageAlt}
-          width={projects.indexOf(project)<2 ? 852 : project.slug==="mahila-mitr" ? 370 : 420}
-          height={projects.indexOf(project)<2 ? 524 : project.slug==="mahila-mitr" ? 808 : 700}
+          width={project.imageWidth ?? (projects.indexOf(project)<2 ? 852 : 420)}
+          height={project.imageHeight ?? (projects.indexOf(project)<2 ? 524 : 700)}
           decoding="async"
         />
         <figcaption>
           {project.imageCaption ??
             "Product illustration — a visual explanation, not an application screenshot."}
         </figcaption>
-      </figure>
+      </figure>}
       <section id="case-overview" className="case-section">
         <h2>Overview</h2>
         <p>{project.overview}</p>
