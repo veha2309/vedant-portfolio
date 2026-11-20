@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import { contact } from "./data/project";
 import RouteEffects from "./components/RouteEffects";
 import ExternalLinkPrompt from "./components/ExternalLinkPrompt";
+import VisitorCount from "./components/VisitorCount";
 const CaseStudy = lazy(() => import("./pages/CaseStudy"));
 function NotFound() {
   return (
@@ -67,6 +68,7 @@ export default function App() {
             <Link to="/#top">Back to top ↑</Link>
           </div>
         </div>
+        <VisitorCount />
       </footer>
       <ExternalLinkPrompt />
     </>

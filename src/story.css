@@ -74,6 +74,7 @@ em { font-family:inherit; font-style:normal; font-weight:inherit; }
 .personal-note .intro { font-size:30px; line-height:1.15; font-weight:600; letter-spacing:-.045em; color:#202220; }
 .studio-link { font-size:12px; margin-top:35px; }
 footer { border-top:1px solid #bbc4b7; }
+footer .footer-visitor-count { margin:12px 0 0; font-size:11px; color:var(--muted); }
 footer h2 { font-size:clamp(45px,6vw,90px); font-weight:750; letter-spacing:-.065em; }
 /* Enhanced desktop: the hero and projects occupy one continuous pinned canvas. */
 @media(min-width:1024px) and (min-height:760px) and (prefers-reduced-motion:no-preference) {
